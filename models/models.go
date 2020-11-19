@@ -51,6 +51,9 @@ type PlatformGame struct {
 	UpdateTime    time.Time     `orm:"auto_now;type(datetime)"`
 	GameBuyers    []*GameBuyer  `orm:"reverse(many)"`
 	GameSellers   []*GameSeller `orm:"reverse(many)"`
+	// price ref
+	CurPlatformGamePrice  *CurPlatformGamePrice   `orm:"reverse(one)"`
+	HisPlatformGamePrices []*HisPlatformGamePrice `orm:"reverse(many)"`
 }
 
 // User ...
@@ -73,6 +76,7 @@ type GameBuyer struct {
 	User         *User         `orm:"rel(fk)"`
 	PlatformGame *PlatformGame `orm:"rel(fk)"`
 	Price        uint64
+	Count        uint64
 	State        int
 	CreateTime   time.Time `orm:"auto_now_add;type(datetime)"`
 	UpdateTime   time.Time `orm:"auto_now;type(datetime)"`
@@ -84,9 +88,27 @@ type GameSeller struct {
 	User         *User         `orm:"rel(fk)"`
 	PlatformGame *PlatformGame `orm:"rel(fk)"`
 	Price        uint64
+	Count        uint64
 	State        int
 	CreateTime   time.Time `orm:"auto_now_add;type(datetime)"`
 	UpdateTime   time.Time `orm:"auto_now;type(datetime)"`
+}
+
+// CurPlatformGamePrice  当前游戏成交价
+type CurPlatformGamePrice struct {
+	ID           int           `orm:"column(id);pk"`
+	PlatformGame *PlatformGame `orm:"rel(one)"`
+	Price        uint64
+	CreateTime   time.Time `orm:"auto_now_add;type(datetime)"`
+	UpdateTime   time.Time `orm:"auto_now;type(datetime)"`
+}
+
+// HisPlatformGamePrice  历史游戏成交价
+type HisPlatformGamePrice struct {
+	ID           int           `orm:"column(id);pk;auto"`
+	PlatformGame *PlatformGame `orm:"rel(fk)"`
+	Price        uint64
+	CreateTime   time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
 func init() {
@@ -97,7 +119,8 @@ func init() {
 	// 需要在init中注册定义的model
 	orm.RegisterModelWithPrefix("t_",
 		new(Game), new(BigPlatform), new(SmallPlatform), new(PlatformGame),
-		new(User), new(GameBuyer), new(GameSeller))
+		new(User), new(GameBuyer), new(GameSeller),
+		new(CurPlatformGamePrice), new(HisPlatformGamePrice))
 
 	orm.SetMaxIdleConns("default", 30)
 	orm.SetMaxOpenConns("default", 30)

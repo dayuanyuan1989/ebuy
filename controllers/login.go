@@ -99,12 +99,11 @@ func (c *LoginController) Login() {
 	//注册session值
 	c.SetSession("UserId", tUser.ID)
 	// 重定向到首页
-	c.Redirect("/index", 302)
-
+	c.Redirect("/", 302)
 }
 
 // Logout ...
 func (c *LoginController) Logout() {
 	c.DelSession("UserId")
-	c.Redirect("/login/login", 302)
+	c.Redirect("/login", 302)
 }

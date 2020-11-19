@@ -17,15 +17,14 @@ import (
 func filterUser(ctx *context.Context) {
 	sessID := ctx.Input.Session("UserId")
 	isLoginURL := strings.Contains(ctx.Request.RequestURI, "/login")
-	logs.Debug("hasSessUserID: %s", sessID)
 	if sessID == nil && !isLoginURL {
-		ctx.Redirect(302, "/login/index")
+		ctx.Redirect(302, "/login")
 	}
 }
 
 // 添加日志拦截器
 func filterLog(ctx *context.Context) {
-	url, _ := json.Marshal(ctx.Input.Data()["RouterPattern"])
+	url, _ := json.Marshal(ctx.Input.URL())
 	params, _ := json.Marshal(ctx.Request.Form)
 	outputBytes, _ := json.Marshal(ctx.Input.Data()["json"])
 	divider := " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
@@ -39,8 +38,8 @@ func filterLog(ctx *context.Context) {
 func main() {
 
 	//注册过滤器
-	beego.InsertFilter("/*", beego.BeforeRouter, filterUser)
-	beego.InsertFilter("/*", beego.BeforeRouter, filterLog)
+	beego.InsertFilter("/*", beego.BeforeRouter, filterUser, false)
+	beego.InsertFilter("/*", beego.FinishRouter, filterLog, false)
 
 	beego.Run()
 }

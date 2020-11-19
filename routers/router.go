@@ -17,8 +17,8 @@ func init() {
 	// login
 	beego.Router("/login/login", &controllers.LoginController{}, "post:Login")
 	// logout
-
 	beego.Router("/login/logout", &controllers.LoginController{}, "post:Logout")
+
 	// game
 	beego.Router("/game/", &controllers.GameController{}, "*:Index")
 	// lower price

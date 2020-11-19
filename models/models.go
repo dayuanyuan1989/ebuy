@@ -77,6 +77,8 @@ type GameBuyer struct {
 	PlatformGame *PlatformGame `orm:"rel(fk)"`
 	Price        uint64
 	Count        uint64
+	DealCount    uint64
+	UndealCount  uint64
 	State        int
 	CreateTime   time.Time `orm:"auto_now_add;type(datetime)"`
 	UpdateTime   time.Time `orm:"auto_now;type(datetime)"`
@@ -89,6 +91,8 @@ type GameSeller struct {
 	PlatformGame *PlatformGame `orm:"rel(fk)"`
 	Price        uint64
 	Count        uint64
+	DealCount    uint64
+	UndealCount  uint64
 	State        int
 	CreateTime   time.Time `orm:"auto_now_add;type(datetime)"`
 	UpdateTime   time.Time `orm:"auto_now;type(datetime)"`

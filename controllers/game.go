@@ -147,6 +147,7 @@ func (c *GameController) Buy() {
 	tGBuyer.PlatformGame.ID = gameID
 	tGBuyer.Price = uint64(price)
 	tGBuyer.Count = uint64(count)
+	tGBuyer.UndealCount = uint64(count)
 	_, err := o.Insert(tGBuyer)
 	if err != nil {
 		c.Ctx.Output.SetStatus(500)
@@ -174,6 +175,7 @@ func (c *GameController) Sell() {
 	tGSeller.PlatformGame.ID = gameID
 	tGSeller.Price = uint64(price)
 	tGSeller.Count = uint64(count)
+	tGSeller.UndealCount = uint64(count)
 	_, err := o.Insert(tGSeller)
 	if err != nil {
 		c.Ctx.Output.SetStatus(500)

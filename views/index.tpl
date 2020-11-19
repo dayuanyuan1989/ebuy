@@ -79,6 +79,13 @@
     <div class="description">
       Beego is a simple & powerful Go web framework which is inspired by tornado and sinatra.
     </div>
+    <div class="header">
+    <!--a href="#/logout" class="logo fl"><img src="/static/img/logo.png" alt="logo"></a>
+    <a href="/login/logout" class="logout fr">退 出</a-->    
+    <form name="form1" action="/login/logout" method="post">  
+      <a href='javascript:document.form1.submit();'>退 出</a>  
+    </form>
+</div>
   </header>
   <footer>
     <div class="author">

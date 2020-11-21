@@ -8,6 +8,15 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+const (
+	StateInvalid      = 0
+	StateCreated      = 10
+	StatePublished    = 20
+	StateUnpubulished = 30
+	StateDeleted      = 40
+	StateDone         = 50
+)
+
 // Game ...
 type Game struct {
 	ID            int    `orm:"column(id);pk;auto"`

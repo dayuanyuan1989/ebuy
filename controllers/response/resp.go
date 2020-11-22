@@ -1,4 +1,4 @@
-package controllers
+package response
 
 // ResponseBase ...
 // 通用数据返回，只有要 body ，这两个字段一定有

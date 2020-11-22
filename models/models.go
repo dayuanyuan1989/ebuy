@@ -65,6 +65,13 @@ type PlatformGame struct {
 	HisPlatformGamePrices []*HisPlatformGamePrice `orm:"reverse(many)"`
 }
 
+// TopPlatformGame ...
+type TopPlatformGame struct {
+	ID             int       `orm:"column(id);pk;auto"`
+	PlatformGameID int       `orm:"column(platform_game_id)"`
+	CreateTime     time.Time `orm:"auto_now_add;type(datetime)"`
+}
+
 // User ...
 type User struct {
 	ID          int    `orm:"column(id);pk;auto"`
@@ -133,7 +140,8 @@ func init() {
 	orm.RegisterModelWithPrefix("t_",
 		new(Game), new(BigPlatform), new(SmallPlatform), new(PlatformGame),
 		new(User), new(GameBuyer), new(GameSeller),
-		new(CurPlatformGamePrice), new(HisPlatformGamePrice))
+		new(CurPlatformGamePrice), new(HisPlatformGamePrice),
+		new(TopPlatformGame))
 
 	orm.SetMaxIdleConns("default", 30)
 	orm.SetMaxOpenConns("default", 30)

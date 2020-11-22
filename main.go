@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"net/url"
 	"strings"
 
 	_ "ebuy/configs"
@@ -13,11 +14,28 @@ import (
 	"github.com/astaxie/beego/logs"
 )
 
+var passURLs = []string{
+	"/game/sell/top",
+	"/game/buy/top",
+	"/game",
+}
+
 // filterUser ...
 func filterUser(ctx *context.Context) {
 	sessID := ctx.Input.Session("UserId")
 	isLoginURL := strings.Contains(ctx.Request.RequestURI, "/login")
+	u, err := url.Parse(ctx.Request.RequestURI)
+	if err != nil {
+		logs.Error("url parse error, %s", err.Error())
+		return
+	}
 	if sessID == nil && !isLoginURL {
+		for _, passURL := range passURLs {
+			//logs.Info("url: %s, pass: %s", u.Path, passURL)
+			if u.Path == passURL {
+				return
+			}
+		}
 		ctx.Redirect(302, "/login")
 	}
 }

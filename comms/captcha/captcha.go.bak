@@ -1,0 +1,50 @@
+package captcha
+
+import (
+	"net/http"
+)
+
+// Captcha ...
+type Captcha struct{}
+
+// VerifyReq verify from a request
+func (c *Captcha) VerifyReq(req *http.Request) bool {
+	// 解析请求体
+	req.ParseForm()
+	// 读取请求参数调用Verify方法
+	return c.Verify(req.Form.Get(c.FieldIDName), req.Form.Get(c.FieldCaptchaName))
+}
+
+// 验证验证码id和字符串
+func (c *Captcha) Verify(id string, challenge string) (success bool) {
+	if len(challenge) == 0 || len(id) == 0 {
+		return
+	}
+
+	var chars []byte
+
+	key := c.key(id)
+
+	if v, ok := c.store.Get(key).([]byte); ok {
+		chars = v
+	} else {
+		return
+	}
+
+	defer func() {
+		// finally remove it
+		c.store.Delete(key)
+	}()
+
+	if len(chars) != len(challenge) {
+		return
+	}
+	// verify challenge
+	for i, c := range chars {
+		if c != challenge[i]-48 {
+			return
+		}
+	}
+
+	return true
+}
